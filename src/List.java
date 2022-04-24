@@ -1,4 +1,6 @@
+import javax.swing.*;
 import javax.swing.tree.AbstractLayoutCache;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -167,8 +169,7 @@ public class List {
             if(temp.getInfo() ==  parameter)    {
                 positionRemove(index);
                 erased++;
-            }
-            index ++;
+            }else   index ++;
             temp = temp.getLink();
         }
         return erased;
@@ -176,10 +177,10 @@ public class List {
 
     public String toString() {
         Node temp = head;
-        String list = "list: \n";
+        String list = "";
         if(isEmpty())   list = " EMPTY LIST.\n ";
         while(temp != null) {
-            list += temp.getInfo() + "\t";
+            list += temp.getInfo() + "   ";
             temp = temp.getLink();
         }
         return list;
@@ -187,28 +188,117 @@ public class List {
 }
 
 class Test{
+    static ArrayList<JLabel> lbls;
+    static ArrayList<JTextField> txts;
+
+    static void setBody(JPanel body){
+        GridBagLayout gridBagLayout = new GridBagLayout();
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = new Insets(10,10,10,10);
+        body.setLayout(gridBagLayout);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        body.add(lbls.get(0),gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        body.add(txts.get(0),gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        body.add(lbls.get(1),gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        body.add(txts.get(1),gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        body.add(lbls.get(2),gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        body.add(txts.get(2),gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        body.add(lbls.get(3),gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        body.add(txts.get(3),gbc);
+
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        body.add(lbls.get(4),gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        body.add(txts.get(4),gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        body.add(lbls.get(5),gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+        body.add(txts.get(5),gbc);
+    }
+
     public static void main(String[] args) {
+        JFrame mainFrame = new JFrame("ES 31-32 PAG 204");
+        lbls = new ArrayList<>();
+        lbls.add(new JLabel("RANDOM VALUES",SwingConstants.CENTER));
+        lbls.add(new JLabel("LIST 1",SwingConstants.CENTER));
+        lbls.add(new JLabel("LIST 2",SwingConstants.CENTER));
+        lbls.add(new JLabel("MERGED LIST",SwingConstants.CENTER));
+        lbls.add(new JLabel("ERASE PARAMETER",SwingConstants.CENTER));
+        lbls.add(new JLabel("MERGED LIST WITH ERASE TEST",SwingConstants.CENTER));
+
+        txts = new ArrayList<>();
+        for(int i = 0; i < 6; i ++){
+            txts.add(new JTextField(42));
+            txts.get(i).setEditable(false);
+            txts.get(i).setBorder(null);
+        }
+
+        mainFrame.setSize(800,300);
+        mainFrame.setLocationRelativeTo(null);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        JPanel body = new JPanel();
+        setBody(body);
+
+        //LIST PART
         List l = new List();
         List l2 =  new List();
         ArrayList<Integer> listInfo = new ArrayList<>();
         for(int i = 0; i < 20; i ++)
             listInfo.add(new Random().nextInt(100));
-        System.out.println("RANDOM LIST INFO\n" + listInfo);
+        txts.get(0).setText(listInfo.toString());
         try{
             for(int i = 0; i < 10; i ++){
                 l.add(listInfo.get(i));
                 l2.add(listInfo.get(i+10));
             }
 
-            System.out.println("1° " + l);
-            System.out.println("2° " + l2);
+            txts.get(1).setText(l.toString());
+            txts.get(2).setText(l2.toString());
 
             List l3 = new List(l, l2);
-            System.out.println("MERGED " + l3);
+            txts.get(3).setText(l3.toString());
 
-            l3.erase(listInfo.get(new Random().nextInt(listInfo.size())));
-            System.out.println("TEST ERASE " + l3);
+            int random = listInfo.get(new Random().nextInt(listInfo.size()));
+            txts.get(4).setText(Integer.toString(random));
+            l3.erase(random);
+            txts.get(5).setText(l3.toString());
 
         }catch (Exception e){System.out.println(e);}
+
+        mainFrame.getContentPane().add(BorderLayout.CENTER,body);
+        mainFrame.setVisible(true);
     }
 }
