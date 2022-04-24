@@ -59,11 +59,10 @@ public class List {
     }
 
     public void add(int info)   throws ListException{
-        if(isEmpty())   headAdd(info);
+        if(isEmpty() || info < head.getInfo())   headAdd(info);
         else if(getElements() == 1)
             if(info > head.getInfo())   tailAdd(info);
             else    headAdd(info);
-        else if(info < head.getInfo())  headAdd(info);
         else {
             Node temp = head;
             int index = 1;
